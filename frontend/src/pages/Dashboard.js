@@ -5,7 +5,6 @@ import MedicineCard from '../components/MedicineCard'
 import AddMedicine from '../components/AddMedicine'
 import EditMedicine from '../components/EditMedicine'
 import {Button} from '@mui/material'
-import {useNavigate} from 'react-router-dom'
 import {useAuth} from '../context/AuthContext'
 
 export default function Dashboard() {
