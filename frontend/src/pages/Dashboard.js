@@ -28,15 +28,6 @@ export default function Dashboard() {
     fetchMeds()
   }
 
-  const toggleMed = async (med) => {
-    await api.put(`/medicines/${med._id}`, {
-      isActive: !med.isActive
-    })
-    fetchMeds()
-  }
-  const navigate = useNavigate()
-
-
   return (
     <Stack
       spacing={5}
