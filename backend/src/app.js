@@ -3,6 +3,8 @@ import cors from 'cors'
 import authRoutes from './routes/auth.routes.js'
 import medicineRoutes from './routes/medicine.routes.js'
 
+const app = express()   // ✅ THIS WAS MISSING
+
 app.use(cors({
   origin: [
     'http://localhost:3000'
@@ -10,8 +12,6 @@ app.use(cors({
   credentials: true
 }))
 
-
-app.use(cors())
 app.use(express.json())
 
 app.use('/api/auth', authRoutes)
