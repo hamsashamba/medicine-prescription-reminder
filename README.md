@@ -92,6 +92,125 @@ medicine-prescription-reminder/
 ```
 This modular structure supports easy scaling and maintenance.
 
+## ⚠️ Error Handling & Validation
+
+- Client-side validation is implemented for all forms (login, registration, add/edit medicine)
+- Server-side validation ensures secure and consistent data handling
+- Invalid inputs (e.g., incorrect time formats, missing fields) are rejected with meaningful error messages
+- Authentication errors are handled gracefully with proper HTTP status codes
+
 ## API DOCUMENTATION
 
+### All protected routes require the following header:
+```text
+Authorization: Bearer <JWT_TOKEN>
+```
+#### Authentication
+##### Register
 
+POST /api/auth/register
+```json
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+```
+##### Login
+
+POST /api/auth/login
+```json
+{
+  "token": "<JWT_TOKEN>"
+}
+```
+##### Get User Profile
+GET /api/auth/me
+
+#### Medicines(Protected)
+
+##### Get All Medicines
+GET /api/medicines
+
+##### Add Medicine
+POST /api/medicines
+```json
+{
+  "name": "Paracetamol",
+  "dosage": "500mg",
+  "times": ["08:00", "20:00"]
+}
+```
+
+##### Update Medicine
+PUT /api/medicines/:id
+
+##### Toggle Active / Inactive
+PATCH /api/medicines/:id/toggle
+
+##### Delete Medicine
+DELETE /api/medicines/:id
+
+## API Testing
+
+All APIs were tested using Thunder Client in Visual Studio Code.
+
+Steps:
+
+Login via /api/auth/login
+
+Copy the JWT token from the response
+
+Use the token in the Authorization header for protected routes
+
+## ⚙️ Run Locally
+
+### 🔐 Environment Variables
+
+To run the project locally, create a `.env` file in the backend directory with the following variables:
+
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+EMAIL=your_email_address
+EMAIL_PASS=your_email_app_password
+```
+These variables are required for database connectivity, authentication, and email reminder functionality.
+### Backend
+cd backend
+npm install
+npm start
+
+### Frontend
+cd frontend
+npm install
+npm start
+
+## 📈 Scaling for Production
+### Frontend
+
+- Move JWT storage to HttpOnly cookies for improved security
+
+- Implement pagination for large datasets
+
+- Introduce lazy loading and code splitting
+
+- Add global error handling
+
+### Backend
+
+- Add rate limiting and request throttling
+
+- Use Redis for caching
+
+- Implement centralized logging
+
+- Separate services for auth, medicines, and notifications
+
+### Infrastructure
+
+- CI/CD pipelines
+
+- Separate staging and production environments
+
+- Horizontal scaling with load balancers
