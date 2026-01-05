@@ -1,6 +1,9 @@
 import express from 'express'
 import Medicine from '../models/Medicine.js'
 import authMiddleware from '../middleware/auth.middleware.js'
+import {
+  toggleMedicine
+} from '../controllers/medicine.controller.js'
 
 const router = express.Router()
 
@@ -16,6 +19,7 @@ router.post('/', authMiddleware, async (req, res) => {
     res.status(500).json({ message: err.message })
   }
 })
+router.patch('/:id/toggle', authMiddleware, toggleMedicine)
 
 // Get user's medicines
 router.get('/', authMiddleware, async (req, res) => {

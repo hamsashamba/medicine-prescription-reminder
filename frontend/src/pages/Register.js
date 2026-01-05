@@ -1,4 +1,4 @@
-import { TextField, Button, Typography, Stack, Box } from '@mui/material'
+import { TextField, Button, Typography, Stack, Box, Alert } from '@mui/material'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import GlassCard from '../components/GlassCard'
@@ -7,14 +7,47 @@ import api from '../api/api'
 export default function Register() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+
   const navigate = useNavigate()
 
   const handleRegister = async () => {
+    setError('')
+
+    // ✅ Client-side validation
+    if (!email.trim()) {
+      setError('Email is required')
+      return
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      setError('Please enter a valid email address')
+      return
+    }
+
+    if (!password.trim()) {
+      setError('Password is required')
+      return
+    }
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters')
+      return
+    }
+
     try {
+      setLoading(true)
+
       await api.post('/auth/register', { email, password })
       navigate('/')
     } catch (err) {
-      alert(err.response?.data?.message || 'Registration failed')
+      setError(
+        err.response?.data?.message || 'Registration failed. Please try again.'
+      )
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -49,11 +82,14 @@ export default function Register() {
         </Box>
 
         <Stack spacing={2}>
+          {error && <Alert severity="error">{error}</Alert>}
+
           <TextField
             label="Email"
             fullWidth
             value={email}
             onChange={e => setEmail(e.target.value)}
+            required
           />
 
           <TextField
@@ -62,12 +98,15 @@ export default function Register() {
             fullWidth
             value={password}
             onChange={e => setPassword(e.target.value)}
+            helperText="Minimum 6 characters"
+            required
           />
 
           <Button
             fullWidth
             size="large"
             variant="contained"
+            disabled={loading}
             sx={{
               mt: 1,
               py: 1.2,
@@ -83,7 +122,7 @@ export default function Register() {
             }}
             onClick={handleRegister}
           >
-            Register
+            {loading ? 'Creating account...' : 'Register'}
           </Button>
         </Stack>
       </GlassCard>

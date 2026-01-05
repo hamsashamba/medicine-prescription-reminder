@@ -11,7 +11,7 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 
-export default function MedicineCard({ medicine, onDelete, onToggle }) {
+export default function MedicineCard({ medicine, onDelete, onToggle,onToggleActive,onEdit }) {
   return (
     <Card
       sx={{
@@ -63,45 +63,49 @@ export default function MedicineCard({ medicine, onDelete, onToggle }) {
 
         <Divider sx={{ my: 2, opacity: 0.2 }} />
 
-        {/* Actions */}
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-          }}
-        >
-          <Switch
-            checked={medicine.isActive}
-            onChange={() => onToggle(medicine)}
-          />
+{/* Actions */}
+<Box
+  sx={{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  }}
+>
+  {/* Active / Inactive Toggle */}
+  <Switch
+    checked={medicine.isActive}
+    onChange={() => onToggleActive(medicine._id)}
+  />
 
-          <Box>
-            <IconButton
-              onClick={() => onToggle(medicine)}
-              sx={{
-                color: 'primary.main',
-                '&:hover': {
-                  backgroundColor: 'rgba(25,118,210,0.15)'
-                }
-              }}
-            >
-              <EditIcon />
-            </IconButton>
+  <Box>
+    {/* Edit */}
+    <IconButton
+      onClick={() => onEdit(medicine)}
+      sx={{
+        color: 'primary.main',
+        '&:hover': {
+          backgroundColor: 'rgba(25,118,210,0.15)'
+        }
+      }}
+    >
+      <EditIcon />
+    </IconButton>
 
-            <IconButton
-              onClick={() => onDelete(medicine._id)}
-              sx={{
-                color: 'error.main',
-                '&:hover': {
-                  backgroundColor: 'rgba(211,47,47,0.15)'
-                }
-              }}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </Box>
-        </Box>
+    {/* Delete */}
+    <IconButton
+      onClick={() => onDelete(medicine._id)}
+      sx={{
+        color: 'error.main',
+        '&:hover': {
+          backgroundColor: 'rgba(211,47,47,0.15)'
+        }
+      }}
+    >
+      <DeleteIcon />
+    </IconButton>
+  </Box>
+</Box>
+
       </CardContent>
     </Card>
   )
